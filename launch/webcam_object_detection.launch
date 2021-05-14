@@ -1,0 +1,22 @@
+<launch>
+  <arg name="location" value="living_room" />
+  <rosparam param="category_list">["person", "cat"]</rosparam>
+
+  <node name="webcam_node" pkg="webcam" type="webcam_node">
+    <param name="id" type="int" value="0" />
+    <param name="frame_id" type="str" value="$(arg location)" />
+    <param name="width" type="int" value="1280" />
+    <param name="height" type="int" value="720" />
+    <param name="fps" type="int" value="10" />
+  </node>
+  <param name="/webcam/$(arg location)/image/compressed/format" type="str" value="png" />
+
+  <node name="object_detection_node" pkg="object_detection" type="object_detection_node" output="screen">
+    <param name="model" type="str" value="$(find object_detection)/tensorflow/model/ssdlite_mobilenet_v2_coco_2018_05_09/frozen_inference_graph.pb"/>
+    <param name="labels" type="str" value="$(find object_detection)/tensorflow/labels/mscoco_label_map.pbtxt"/>
+    <param name="image_topic" type="str" value="/webcam/$(arg location)/image" />
+    <param name="object_image_topic" type="str" value="/object_detection/$(arg location)/image" />
+    <param name="object_array_topic" type="str" value="/object_detection/$(arg location)/objects" />
+    <param name="min_score_threshold" type="double" value="0.5" /> 
+  </node>
+</launch>
