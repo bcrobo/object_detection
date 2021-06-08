@@ -1,0 +1,8 @@
+<launch>
+  <node name="object_detection_node" pkg="object_detection" type="object_detection_node" output="screen">
+    <param name="model" type="str" value="$(find object_detection)/tensorflow/model/ssdlite_mobilenet_v2_coco_2018_05_09/frozen_inference_graph.pb"/>
+    <param name="labels" type="str" value="$(find object_detection)/tensorflow/labels/mscoco_label_map.pbtxt"/>
+    <param name="image_topic" type="str" value="/webcam/living_room/image" />
+    <param name="object_image_topic" type="str" value="/object_detection/image" />
+  </node>
+</launch>
